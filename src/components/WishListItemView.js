@@ -70,7 +70,7 @@ class WishListItemView extends Component {
         item={this.state.clone}
         renderActions={() => (
           <>
-            <Button size="small" color="primary" onClick={this.onSave}>
+            <Button size="small" color="primary" onClick={this.onSaveEdit}>
               Save
             </Button>
             <Button size="small" color="secondary" onClick={this.onCancelEdit}>
