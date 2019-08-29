@@ -1,8 +1,11 @@
 import React from "react";
+import { observer } from "mobx-react";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 
 import WishListItemView from "./WishListItemView";
+import WishListItemEntry from "./WishListItemEntry";
+import { Typography } from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -25,14 +28,24 @@ const WishListView = ({ wishList }) => {
       <Grid item xs={12}>
         <Grid container justify="center" spacing={2}>
           {wishList.items.map((item, idx) => (
-            <Grid key={idx} item>
+            <Grid item key={idx}>
               <WishListItemView key={idx} item={item} />
             </Grid>
           ))}
+        </Grid>
+      </Grid>
+      <Grid item xs={12}>
+        <Grid container justify="center">
+          <Typography variant="h2">Total: ${wishList.totalPrice}</Typography>
+        </Grid>
+      </Grid>
+      <Grid item xs={12}>
+        <Grid container justify="center">
+          <WishListItemEntry wishList={wishList} />
         </Grid>
       </Grid>
     </Grid>
   );
 };
 
-export default WishListView;
+export default observer(WishListView);

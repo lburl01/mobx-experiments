@@ -1,11 +1,4 @@
-import { types } from "mobx-state-tree";
-
-const data = {
-  name: "New Camera",
-  price: 833.33,
-  image:
-    "https://images.unsplash.com/photo-1566864222010-d45675442c31?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1300&q=80"
-};
+import { types, getParent, destroy } from "mobx-state-tree";
 
 export const WishListItem = types
   .model({
@@ -22,6 +15,11 @@ export const WishListItem = types
     },
     changeImage(newImage) {
       self.image = newImage;
+    },
+    remove() {
+      // 2 means go two levels up
+      // 1 up is items array, but we want the WishList itself
+      getParent(self, 2).remove(self);
     }
   }));
 
@@ -32,6 +30,9 @@ export const WishList = types
   .actions(self => ({
     add(item) {
       self.items.push(item);
+    },
+    remove(item) {
+      destroy(item);
     }
   }))
   .views(self => ({
