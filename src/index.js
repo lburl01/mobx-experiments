@@ -1,11 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { onSnapshot } from "mobx-state-tree";
+
 import App from "./components/App";
+import { WishList } from "./models/WishList";
 import * as serviceWorker from "./serviceWorker";
 
-import { WishList } from "./models/WishList";
-
-const wishList = WishList.create({
+let initialState = {
   items: [
     {
       name: "New Camera",
@@ -18,6 +19,18 @@ const wishList = WishList.create({
       price: 35
     }
   ]
+};
+
+if (localStorage.getItem("wishlistapp")) {
+  initialState = JSON.parse(localStorage.getItem("wishlistapp"));
+}
+
+const wishList = WishList.create(initialState);
+
+onSnapshot(wishList, snapshot => {
+  const json = localStorage.setItem("wishlistapp", JSON.stringify(snapshot));
+  // safeguard if we change our model a lot to make sure stored snapshot is valid
+  if (WishList.is(json)) initialState = json;
 });
 
 ReactDOM.render(<App wishList={wishList} />, document.getElementById("root"));
